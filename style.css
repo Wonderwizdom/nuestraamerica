@@ -1,0 +1,412 @@
+/* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background: #fefefe;
+        color: #333;
+        padding: 20px;
+        transition: background 0.3s, color 0.3s;
+      }
+      /* Dark Mode */
+      body.dark {
+        background: #222;
+        color: #ddd;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 20px 0;
+        background: linear-gradient(135deg, #7f00ff, #e100ff);
+        color: #fff;
+        border-radius: 8px;
+      }
+      header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        min-height: 60px; /* Reserve space for typewriter text */
+      }
+      .controls {
+        margin-top: 10px;
+      }
+      .controls button {
+        background: #fff;
+        color: #333;
+        border: none;
+        padding: 10px 15px;
+        margin: 0 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s;
+      }
+      .controls button:hover {
+        background: #ddd;
+        transform: scale(1.05);
+      }
+      .controls button#languageBtn {
+        background: #7f00ff;
+        color: #fff;
+        transition: background 0.3s, transform 0.2s;
+      }
+      .controls button#languageBtn:hover {
+        background: #6a00d6;
+        transform: scale(1.05);
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      article p {
+        margin-bottom: 1em;
+        padding: 10px;
+        border-left: 4px solid #7f00ff;
+        background: rgba(127, 0, 255, 0.05);
+        border-radius: 4px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        cursor: pointer;
+        position: relative; /* Important for close button positioning */
+      }
+      article p.fade-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      article p.highlight {
+        background: #fffd82;
+        transition: background 0.5s ease;
+      }
+      /* Scroll to Top Button */
+      #scrollTopBtn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 10px 15px;
+        font-size: 1.2em;
+        background: #7f00ff;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        z-index: 100;
+        transition: background 0.3s, transform 0.3s;
+      }
+      #scrollTopBtn:hover {
+        background: #5e0099;
+        transform: scale(1.1);
+      }
+      /* Modal (for Random Quote) */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 200;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      .modal-content {
+        background: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        position: relative;
+      }
+      body.dark .modal-content {
+        background: #333;
+        color: #eee;
+      }
+      .modal-content p {
+        font-size: 1.1em;
+      }
+      .close {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #555;
+        cursor: pointer;
+      }
+      .close:hover {
+        color: #000;
+      }
+
+      /* Add after existing styles in <style> section */
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 50;
+        transition: opacity 0.3s;
+      }
+
+      article p.active-highlight {
+        position: relative;
+        z-index: 100;
+        background: #fffd82;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      }
+
+      .close-highlight {
+        display: none;
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+        background: #333;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 1000;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transform: none;
+      }
+
+      .close-highlight:hover {
+        background: #555;
+      }
+
+      body.dark article p.active-highlight {
+        background: #fffd82;
+        color: #333; /* Dark text for better contrast on yellow background */
+      }
+
+      .sticky-note {
+        position: absolute;
+        width: 200px;
+        min-height: 200px;
+        background: #feff9c;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        cursor: move;
+        transform-origin: top left;
+        animation: popup 0.3s ease-out;
+        z-index: 1000;
+        border-radius: 2px;
+      }
+
+      .sticky-note:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-width: 0 20px 20px 0;
+        border-style: solid;
+        border-color: #fff8b2 #fff;
+      }
+
+      .sticky-note textarea {
+        width: 100%;
+        height: 180px;
+        border: none;
+        background: transparent;
+        resize: none;
+        font-family: 'Comic Sans MS', cursive;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      @keyframes popup {
+        0% {
+          transform: scale(0) rotate(-15deg);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.2) rotate(5deg);
+        }
+        100% {
+          transform: scale(1) rotate(0);
+          opacity: 1;
+        }
+      }
+
+      .selected-text {
+        background: rgba(255, 255, 0, 0.3);
+        transition: background-color 0.3s;
+      }
+
+      .note-close {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+      }
+
+      @keyframes popIn {
+        0% { transform: scale(0.3); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      /* Color customization controls */
+      .color-controls {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+      }
+      
+      .annotation-number {
+        font-size: 0.7em;
+        vertical-align: super;
+        color: #666;
+        margin-left: 2px;
+      }
+
+      /* Add to your existing styles */
+      .selected-text {
+        transition: background-color 0.3s ease;
+      }
+
+      .sticky-note {
+        transition: background-color 0.3s ease;
+      }
+
+      /* Add to your existing styles */
+      .note-number {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          font-weight: bold;
+          color: #666;
+      }
+
+      /* Remove or comment out the following duplicate rules */
+      /*
+      .sticky-note {
+          position: relative;
+          padding-top: 25px;
+      }
+      */
+      
+      article p {
+    margin-bottom: 1em;
+    padding: 10px;
+    border-left: 4px solid #7f00ff;
+    background: rgba(127, 0, 255, 0.05);
+    border-radius: 4px;
+    opacity: 1; /* changed from 0 to 1 to make text visible */
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    cursor: pointer;
+    position: relative; /* Important for close button positioning */
+    padding-right: 20px !important;
+  }
+
+      body.dark .selected-text {
+        background-color: rgba(200, 200, 0, 0.5); /* darker yellow; adjust as needed */
+        color: #444; /* Optional: darken text if needed */
+      }
+
+      body.dark .color-controls {
+        background-color: #2c2c2c;
+        color: #f0f0f0;
+        border: 1px solid #444;
+        padding: 10px;
+      }
+
+      .close-highlight {
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        background: #333;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 1000;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      article p {
+        position: relative !important;
+        padding-right: 30px !important;  /* Make room for close button */
+        margin-top: 15px !important;     /* Add some top margin to prevent overlap */
+      }
+
+      article p.active-highlight .close-highlight {
+        display: block;
+      }
+
+      /* Add to your CSS */
+      .annotation-number {
+        cursor: pointer;
+        color: #0066cc;
+        font-weight: bold;
+        padding: 0 2px;
+        user-select: none;
+      }
+
+      .annotation-number:hover {
+        text-decoration: underline;
+        background-color: rgba(0, 102, 204, 0.1);
+      }
+
+      .sticky-note {
+        display: block;
+        position: absolute;
+        z-index: 1000;
+        min-width: 200px;
+        min-height: 150px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      }
+
+      .sticky-note.hidden {
+        display: none;
+      }
+
+      @media print {
+        .sticky-note, 
+        .color-controls,
+        .overlay,
+        .close-highlight {
+            display: none !important;
+        }
+        
+        .selected-text {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+        
+        article {
+            color: #000000 !important;
+            background: #ffffff !important;
+        }
+      }
